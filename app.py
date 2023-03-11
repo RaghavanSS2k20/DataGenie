@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
-from tsfresh import *
+
 from scipy.stats import norm
-import tsfresh
+from tsfresh import *
 from tsfresh.utilities.dataframe_functions import impute
 from multiprocessing import Pool, freeze_support
 import matplotlib.pyplot as plt
+from statsmodels.graphics.tsaplots import plot_acf
 
 from statsmodels.tsa.stattools import adfuller
 if __name__ == '__main__':
@@ -34,22 +35,29 @@ if __name__ == '__main__':
     # plt.show()
 
 
-    rolling_mean = df['point_value'].rolling(window=30).mean()
-    rolling_std = df['point_value'].rolling(window=30).std()
+    # rolling_mean = df['point_value'].rolling(window=30).mean()
+    # rolling_std = df['point_value'].rolling(window=30).std()
 
-    # Plot the time series along with its rolling mean and rolling standard deviation
-    plt.plot(df['point_value'], color='blue', label='Original')
-    plt.plot(rolling_mean, color='red', label='Rolling Mean')
-    plt.plot(rolling_std, color='black', label='Rolling Std')
-    plt.legend()
-    plt.title('Rolling Mean and Standard Deviation')
-    plt.show()
+    # # Plot the time series along with its rolling mean and rolling standard deviation
+    # plt.plot(df['point_value'], color='blue', label='Original')
+    # plt.plot(rolling_mean, color='red', label='Rolling Mean')
+    # plt.plot(rolling_std, color='black', label='Rolling Std')
+    # plt.legend()
+    # plt.title('Rolling Mean and Standard Deviation')
+    # plt.show()
 
     # Perform the ADF test and print the p-value
-    result = adfuller(df['point_value'])
-    print('ADF p-value:', result[1])
+    # result = adfuller(df['point_value'])
+    # print('ADF p-value:', result[1])
 
+    plot_acf(df['point_value'])
+    plt.show()
 
+    from outliers import remove_outliers
+    df.dropna()
+    cleaned_df = remove_outliers(df)
+    print(df)
+    print(cleaned_df)
     
     f=extract_features(df,column_id='point_value',column_sort='point_timestamp' )
     f.to_csv('test2.csv')
