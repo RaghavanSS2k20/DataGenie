@@ -1,14 +1,20 @@
 import pandas as pd
 import numpy as np
+import sys
+from test import xgboost_predict
+sys.path.append(0, 'D:/XB/')
 
 from scipy.stats import norm
 from tsfresh import *
 from tsfresh.utilities.dataframe_functions import impute
 from multiprocessing import Pool, freeze_support
+# from prophet import Prophet
 import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.stattools import adfuller
 from scipy import signal
+from statsmodels.tsa.exponential_smoothing.ets import ETSModel
+
 from statsmodels.tsa.arima.model import ARIMA
 from sklearn.metrics import mean_absolute_percentage_error
 # from pmdarima.arima import auto_arima
@@ -78,9 +84,12 @@ if __name__ == '__main__':
     agg.to_csv("test.csv")
     summary = cleaned_df.describe()
     mainDf = pd.DataFrame()
+    # df['point_timestamp'] = pd.to_datetime(df['point_timestamp'])
+    # df['day'] = df['point_timestamp'].dt.day
+    # train_data, test_data = train_test_split(df, test_size=0.2, shuffle=False)
     heads = list(summary.index)
     heads.extend(['kurtosis','skew','stationary_value','sampling','autocorrelation','trend_x','trend_y','mean_psd','std_psd','max_psd','max_freq','lowes_mape','model'])
-        
+    
     f,psd = signal.welch(cleaned_df['point_value'], fs=1, nperseg=256)
     mean_psd = np.mean(psd)
     std_psd = np.std(psd)
@@ -110,8 +119,26 @@ if __name__ == '__main__':
     print(mape)
     mapes.append(mape)
 
+    from ETS import forcast_ETS
+    ##ETS model
+    print(train_data)
+    ETS_forecast = forcast_ETS(train_data)
+    if(ETS_forecast == "THIS MODEL CANNOT BE USED FOR THIS DATA"):
+        mape=float('inf')
+    else:
+        print("hail")
+        mape = mean_absolute_percentage_error(test_data, predictions)
+    mapes.append(mape)
+    
+    # from models.XGregressor import xg_prediction
+    
+    xgp = xgboost_predict(train_data, test_data)
+    mape = mean_absolute_percentage_error(xgp[1], xgp[0])
+    print(mape)
 
-    ##Prophet model
+
+
+
     
     
     
