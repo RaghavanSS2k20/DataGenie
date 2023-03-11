@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import sys
-from test import xgboost_predict
-sys.path.append(0, 'D:/XB/')
 
+sys.path.append('D:/XB')
+from test import xgboost_predict
 from scipy.stats import norm
 from tsfresh import *
 from tsfresh.utilities.dataframe_functions import impute

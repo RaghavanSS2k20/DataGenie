@@ -1,3 +1,0 @@
-#!d:\datafiene\datagenie-hackathon\denv\scripts\python.exe
-from numba.pycc import main
-main()
