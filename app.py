@@ -135,6 +135,8 @@ if __name__ == '__main__':
     xgp = xgboost_predict(train_data, test_data)
     mape = mean_absolute_percentage_error(xgp[1], xgp[0])
     print(mape)
+    mapes.append(mape)
+    
 
 
 
