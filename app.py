@@ -58,6 +58,7 @@ if __name__ == '__main__':
     cleaned_df = remove_outliers(df)
     print(df)
     print(cleaned_df)
+    print("                   ")
     
     f=extract_features(df,column_id='point_value',column_sort='point_timestamp' )
     f.to_csv('test2.csv')
