@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 heads = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
-heads.extend(['kurtosis','skew','stationary_value','sampling','slope','intercept','fft','mean_psd','std_psd','max_psd','max_freq','lowes_mape','model'])
+heads.extend(['kurtosis','skew','stationary_value','sampling','slope','intercept','fft','mean_psd','std_psd','max_psd','max_freq','model'])
 mainDf = pd.DataFrame(columns=heads)
 def checkcollinear(X,Y,THRESHOLD):
     corr = np.cov(X,Y)[0][1]/(np.std(X)*np.std(Y))
@@ -104,6 +104,7 @@ X_train, X_test, y_train, y_test = train_test_split(data.drop('model',axis=1), d
 classifier = GaussianNB()
 classifier.fit(X_train,y_train)
 pred = classifier.predict(X_test)
+gcls = classifier
 accuracy = accuracy_score(y_true, y_pred)
 from sklearn.metrics import classification_report
 from sklearn.metrics import roc_curve, roc_auc_score
