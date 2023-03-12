@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi import FastAPI, Request, HTTPException
 from fastapi import FastAPI, Request
 from app import arima_model
+from ETS import forcast_ETS
 app = FastAPI()
 
 @app.get('/')
@@ -27,7 +28,9 @@ async def predict(date_from: str, date_to: str, period: int):
     from helpers import helper_function
     test_data = helper_function(df)
     from main import gcls
+    from app import fit
     pred= gcls.predict(test_data)
+
     predictions = []
     if pred == 0:
         testData = df['point_value']
@@ -35,7 +38,11 @@ async def predict(date_from: str, date_to: str, period: int):
         mape = mean_absolute_percentage_error(test_data, predictions)
 
     if pred == 1:
+        predict = fit.forecast(steps=period)
+    
         
+
+
 
 
     # Do prediction for given date range and period

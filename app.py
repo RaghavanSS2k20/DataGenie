@@ -142,11 +142,14 @@ def init(cleaned_df,f):
     from ETS import forcast_ETS
     ##ETS model
     print(train_data)
+    fit = None
     ETS_forecast = forcast_ETS(train_data)
     if(ETS_forecast == "THIS MODEL CANNOT BE USED FOR THIS DATA"):
         mape=float('inf')
     else:
         print("hail")
+        predictions = ETS_forecast[0]
+        fit = ETS_forecast[1]
         mape = mean_absolute_percentage_error(test_data, predictions)
     mapes.append(mape)
 
