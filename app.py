@@ -28,7 +28,8 @@ mainDf = pd.DataFrame()
 
 df =  pd.read_csv("D:\DHACKATHON\DataGeinie\drive-download-20230310T132954Z-001\daily\sample_1.csv")
 print(type(df['point_value'][1]))
-def init(cleaned_df):
+def init(cleaned_df,f):
+    print('msinnmm',f)
     
     lst = []
     # plt.plot(df['point_timestamp'],df['point_value'])
@@ -160,7 +161,7 @@ def init(cleaned_df):
 
     from models.prophet import prophet_predict
     #prophet
-    pred = prophet_predict(train_data, test_data)
+    pred = prophet_predict(train_data, test_data,f)
     mape = mean_absolute_percentage_error(pred[0], pred[1])
     print(mape)
     mapes.append(mape)
@@ -174,7 +175,7 @@ def init(cleaned_df):
     summary = cleaned_df.describe()
     # ['kurtosis','skew','stationary_value','sampling','slope','intercept','fft','mean_psd','std_psd','max_psd','max_freq','lowes_mape','model']
     l = [summary.loc['count', 'point_value'], summary.loc['mean', 'point_value'],summary.loc['std', 'point_value'],summary.loc['min', 'point_value'],summary.loc['max', 'point_value'],summary.loc['25%', 'point_value'],summary.loc['50%', 'point_value'],summary.loc['75%', 'point_value'],
-    cleaned_df['point_value'].kurtosis(),cleaned_df['point_value'].skew(),adfTestResult[1],'D',coefficients[0],coefficients[1],dc_component,mean_psd,std_psd,max_psd,max_freq,min(mapes)]
+    cleaned_df['point_value'].kurtosis(),cleaned_df['point_value'].skew(),adfTestResult[1],f,coefficients[0],coefficients[1],dc_component,mean_psd,std_psd,max_psd,max_freq,min(mapes)]
     lst.extend(l)
     min_mape = min(mapes)
     ##arima ets xgboost prophet
@@ -185,6 +186,8 @@ def init(cleaned_df):
     mdl = model[mapes.index(min_mape)]
     lst.append(mdl)
     return lst
+
+    
 
 
 
