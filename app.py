@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
 import sys
+
+sys.path.append('D:/XB')
 from test import xgboost_predict
-sys.path.append(0, 'D:/XB/')
 
 from scipy.stats import norm
 from tsfresh import *
@@ -84,9 +85,7 @@ if __name__ == '__main__':
     agg.to_csv("test.csv")
     summary = cleaned_df.describe()
     mainDf = pd.DataFrame()
-    # df['point_timestamp'] = pd.to_datetime(df['point_timestamp'])
-    # df['day'] = df['point_timestamp'].dt.day
-    # train_data, test_data = train_test_split(df, test_size=0.2, shuffle=False)
+    
     heads = list(summary.index)
     heads.extend(['kurtosis','skew','stationary_value','sampling','autocorrelation','trend_x','trend_y','mean_psd','std_psd','max_psd','max_freq','lowes_mape','model'])
     
@@ -131,12 +130,16 @@ if __name__ == '__main__':
     mapes.append(mape)
     
     # from models.XGregressor import xg_prediction
-    
+    cleaned_df['point_timestamp'] = pd.to_datetime(df['point_timestamp'])
+    cleaned_df['day'] = cleaned_df['point_timestamp'].dt.day
+    train_data, test_data = train_test_split(cleaned_df, test_size=0.2, shuffle=False)
     xgp = xgboost_predict(train_data, test_data)
     mape = mean_absolute_percentage_error(xgp[1], xgp[0])
     print(mape)
     mapes.append(mape)
+
     
+
 
 
 
