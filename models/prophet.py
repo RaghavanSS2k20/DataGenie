@@ -16,4 +16,4 @@ def prophet_predict(train_data, test_data,f):
     
     fdf = model.make_future_dataframe(periods = len(test_data),freq=f)
     pred = model.predict(fdf)
-    return [test_data['y'].values,pred['yhat'][-len(test_data):].values]
+    return [test_data['y'].values,pred['yhat'][-len(test_data):].values,model]

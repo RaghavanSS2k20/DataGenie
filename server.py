@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, Request, HTTPException
 from fastapi import FastAPI, Request
-from app import arima_model
+from app import arima_model,xgpmodel
 from ETS import forcast_ETS
 app = FastAPI()
 
@@ -34,11 +34,49 @@ async def predict(date_from: str, date_to: str, period: int):
     predictions = []
     if pred == 0:
         testData = df['point_value']
-        predictions=arima_model.predict(start=testData.index[0],end = testData.index[-1],typ = 'levels').tolist()
+        predictions=arima_model.predict(start=testData.index[0],end = testData.index[-1],typ = 'levels')
         mape = mean_absolute_percentage_error(test_data, predictions)
+        predictions 
 
-    if pred == 1:
-        predict = fit.forecast(steps=period)
+    elif pred == 1:
+        predictions = fit.forecast(steps=period).tolist()
+        mape = mean_absolute_percentage_error(df['point_values'], predictions)
+        predictions = predictions.tolist()
+    elif pred==2:
+        testData = df
+        df['point_timestamp']=pd.to_datetime(df['point_timestamp'])
+        df['day'] = df['point_timestamp'].dt.day
+        predictions=xgpmodel.predict(df['day'])
+        mape = mean_absolute_percentage_error(df['point_values'], predictions)
+        predictions = predictions.tolist()
+    elif pred == 3:
+        from app import prophet_model
+        fdf = prophet_model.make_future_dataframe(periods=period,fred='D')
+        pred = prophet_model.predict(fdf)
+        predictions=pred['yhat'][-period:].values
+        mape = mean_absolute_percentage_error(df['point_value'], predictions)
+        predictions = predictions.tolist()
+    modeldict = {0:'ARIMA',
+            1:'ETS',
+            2:'XGBOOST',
+            3:'prophet'}
+    response = {
+        "Model":modeldict[pred],
+        "mape":mape,
+        "result":[
+            {
+                
+            }
+        ]
+    }
+
+
+
+
+
+
+    
+
     
         
 

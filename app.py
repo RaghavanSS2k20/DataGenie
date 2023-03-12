@@ -157,7 +157,10 @@ def init(cleaned_df,f):
     cleaned_df['point_timestamp'] = pd.to_datetime(df['point_timestamp'])
     cleaned_df['day'] = cleaned_df['point_timestamp'].dt.day
     train_data, test_data = train_test_split(cleaned_df, test_size=0.2, shuffle=False)
+
     xgp = xgboost_predict(train_data, test_data)
+    xgpmodel = xgp[2]
+    
     mape = mean_absolute_percentage_error(xgp[1], xgp[0])
     print(mape)
     mapes.append(mape)
@@ -166,6 +169,7 @@ def init(cleaned_df,f):
     #prophet
     pred = prophet_predict(train_data, test_data,f)
     mape = mean_absolute_percentage_error(pred[0], pred[1])
+    prophet_model = pred[2]
     print(mape)
     mapes.append(mape)
 
@@ -186,6 +190,7 @@ def init(cleaned_df,f):
             1:'ETS',
             2:'XGBOOST',
             3:'prophet'}
+    
     mdl = model[mapes.index(min_mape)]
     lst.append(mdl)
     return lst
