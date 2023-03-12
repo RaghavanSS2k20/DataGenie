@@ -105,3 +105,8 @@ classifier = GaussianNB()
 classifier.fit(X_train,y_train)
 pred = classifier.predict(X_test)
 accuracy = accuracy_score(y_true, y_pred)
+from sklearn.metrics import classification_report
+from sklearn.metrics import roc_curve, roc_auc_score
+report = classification_report(y_test, pred)
+print(report)
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
