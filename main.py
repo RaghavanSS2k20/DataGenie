@@ -19,9 +19,9 @@ for i in range(1,11):
     # summary = cdf.describe()
     # print(summary)
     # heads = list(summary.index)
-    print(heads)
+    # print(heads)
 
-    mainDf.columns = heads
+    # mainDf.columns = heads
     print(mainDf)
     lst = init(cdf,'D')
     mainDf.loc[len(mainDf)] = lst
@@ -35,9 +35,9 @@ for i in range(1,11):
     # summary = cdf.describe()
     # print(summary)
     # heads = list(summary.index)
-    print(heads)
+    # print(heads)
 
-    mainDf.columns = heads
+    # mainDf.columns = heads
     print(mainDf)
     lst = init(cdf,'H')
     mainDf.loc[len(mainDf)] = lst
@@ -51,9 +51,9 @@ for i in range(0,10):
     # summary = cdf.describe()
     # print(summary)
     # heads = list(summary.index)
-    print(heads)
+    # print(heads)
 
-    mainDf.columns = heads
+    # mainDf.columns = heads
     print(mainDf)
     lst = init(cdf,'M')
     mainDf.loc[len(mainDf)] = lst

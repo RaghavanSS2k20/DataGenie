@@ -108,7 +108,7 @@ def init(cleaned_df,f):
 
     # # calculate the trend values
     # trend = slope * x + intercept
-
+    """ POWER SPECTRAL DENSITY ANALYSIS"""
     f,psd = signal.welch(cleaned_df['point_value'], fs=1, nperseg=256)
     mean_psd = np.mean(psd)
     std_psd = np.std(psd)

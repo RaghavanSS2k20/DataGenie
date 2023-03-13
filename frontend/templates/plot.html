@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ROC Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart"></canvas>
+
+    <script>
+        fetch('http://localhost:8000/plot/roc')
+          .then(response => response.json())
+          .then(data => {
+            // Use data to plot chart using Chart.js
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.fpr,
+                    datasets: [{
+                        label: 'ROC curve',
+                        borderColor: 'blue',
+                        data: data.tpr,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                max: 1,
+                                min: 0
+                            }
+                        }]
+                    }
+                }
+            });
+          });
+    </script>
+</body>
+</html>

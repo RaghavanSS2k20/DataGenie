@@ -1,9 +1,20 @@
 from fastapi import FastAPI
 from fastapi import FastAPI, Request, HTTPException
 from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from app import arima_model,xgpmodel
 from ETS import forcast_ETS
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True,
+    expose_headers=["*"],
+)
+from main import fpr,tpr
 
 @app.get('/')
 def index():
@@ -60,15 +71,26 @@ async def predict(date_from: str, date_to: str, period: int):
             1:'ETS',
             2:'XGBOOST',
             3:'prophet'}
+    result = []
+    for index,row in df.iterrows():
+        result.append({'point_timestamp':row['point_timestamp'],
+                        'point_value':row['point_value'],
+                        'yhat':predictions[index]})
     response = {
         "Model":modeldict[pred],
         "mape":mape,
-        "result":[
-            {
-                
-            }
-        ]
+        "result":result
     }
+    return JSONResponse(content=response)
+@app.get('/plot/roc')
+def plot():
+    response={
+                'fpr':fpr.tolist(),
+                'tpr':tpr.tolist()
+            }
+    return JSONResponse(content=response)
+    
+
 
 
 
