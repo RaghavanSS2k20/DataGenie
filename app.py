@@ -180,7 +180,7 @@ def init(cleaned_df,f):
     fftval = fft(cleaned_df['point_value'].values)
     dc_component = np.real(fftval[0]) / len(cleaned_df['point_value'])
     summary = cleaned_df.describe()
-    # ['kurtosis','skew','stationary_value','sampling','slope','intercept','fft','mean_psd','std_psd','max_psd','max_freq','lowes_mape','model']
+    # ['kurtosis','skew','stationary_value','sampling','slope','intercept','fft','mean_psd','std_psd','max_psd','max_freq','model']
     l = [summary.loc['count', 'point_value'], summary.loc['mean', 'point_value'],summary.loc['std', 'point_value'],summary.loc['min', 'point_value'],summary.loc['max', 'point_value'],summary.loc['25%', 'point_value'],summary.loc['50%', 'point_value'],summary.loc['75%', 'point_value'],
     cleaned_df['point_value'].kurtosis(),cleaned_df['point_value'].skew(),adfTestResult[1],f,coefficients[0],coefficients[1],dc_component,mean_psd,std_psd,max_psd,max_freq]
     lst.extend(l)
